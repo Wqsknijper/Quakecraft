@@ -2,22 +2,24 @@ package dev.nidocraft.net.Utils;
 
 import dev.nidocraft.net.Enums.GameStates;
 import dev.nidocraft.net.Gamemanager.GameCache;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static dev.nidocraft.net.Main.getValueFromPath;
 
 public class GameUtils {
 
     public static void startGame(){
-
-    }
-
-    public static void countDown(){
-
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage("§eThe game has started!");
+            p.sendTitle("§eGood Luck", "§6Have Fun", 3, 3, 3);
+            p.playSound(p.getLocation(), Sound.ENTITY_SNOWBALL_THROW, 10, 1f);
+        }
     }
 
     public static void startManager(){
@@ -42,11 +44,24 @@ public class GameUtils {
                     p.playSound(p.getLocation(), Sound.ENTITY_SNOWBALL_THROW, 10, 1f);
                 }
             } else if(second == 0) {
-                for(Player p : Bukkit.getOnlinePlayers()) {
-                    p.sendMessage("§eThe game has started!");
-                    p.sendTitle("§eGood Luck", "§6Have Fun", 3, 3, 3);
-                    p.playSound(p.getLocation(), Sound.ENTITY_SNOWBALL_THROW, 10, 1f);
-                }
+                startGame();
+            }
+        }
+    }
+
+    public static void gunShooter(Player p) {
+        Location loc = p.getLocation();
+        Vector dir = p.getLocation().getDirection();
+        List<Player> hits = new ArrayList<>();
+        for (double i = 0; i < 250; i += 0.5) {
+            loc.add(dir);
+            if (loc.getBlock().getType() != Material.AIR) break;
+            Bukkit.getOnlinePlayers().stream().filter(t -> t.getLocation().distance(loc) < 50).forEach(t -> t.spawnParticle(Particle.BARRIER, loc, 1));
+            for (Player t : Bukkit.getOnlinePlayers().stream().filter(t -> t.getLocation().distance(loc) < 0.7 && !hits.contains(t)).collect(Collectors.toList())) {
+                hits.add(t);
+
+                // code die gebeurt bij een kill
+                // t = victim, p = attacker
             }
         }
     }
