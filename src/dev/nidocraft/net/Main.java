@@ -1,24 +1,1 @@
-package dev.nidocraft.net;
-
-import dev.nidocraft.net.Gamemanager.GameCache;
-import dev.nidocraft.net.Utils.PlayerUtils;
-import dev.nidocraft.net.Utils.SpawnUtils;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Arrays;
-
-public class Main extends JavaPlugin {
-
-    @Override
-    public void onEnable(){
-        SpawnUtils.generateSpawns(25, 75, -25, 47, 47, 20);
-        regEvents();
-        GameCache.seconds.addAll(Arrays.asList(30, 20, 10, 5, 4, 3, 2, 1));
-        getLogger().info("Enabled");
-    }
-
-    void regEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerUtils(), this);
-    }
-
-}
+package dev.nidocraft.net;import dev.nidocraft.net.Utils.PlayerUtils;import dev.nidocraft.net.Utils.SpawnUtils;import org.bukkit.configuration.InvalidConfigurationException;import org.bukkit.configuration.file.FileConfiguration;import org.bukkit.configuration.file.YamlConfiguration;import org.bukkit.plugin.java.JavaPlugin;import java.io.File;import java.io.IOException;public class Main extends JavaPlugin {    @Override    public void onEnable(){        createCustomConfig();        SpawnUtils.generateSpawns(25, 75, -25, 47, 47, (int) getValueFromPath("max-players"));        regEvents();        getLogger().info("Enabled");    }    void regEvents() {        getServer().getPluginManager().registerEvents(new PlayerUtils(), this);    }    private File customConfigFile;    private static FileConfiguration p;    private void createCustomConfig() {        customConfigFile = new File(getDataFolder(), "config.yml");        if (!customConfigFile.exists()) {            customConfigFile.getParentFile().mkdirs();            saveResource("config.yml", false);        }        p = new YamlConfiguration();        try {            p.load(customConfigFile);        } catch (IOException | InvalidConfigurationException e) {            e.printStackTrace();        }    }    public static Object getValueFromPath(String path) {        return p.get(path);    }}

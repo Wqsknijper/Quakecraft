@@ -1,0 +1,5 @@
+#Default: 2
+min-players: 2
+max-players: 12
+#Waiting time before shooting again in seconds
+shoot-delay: 3

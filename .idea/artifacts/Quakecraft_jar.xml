@@ -4,6 +4,7 @@
     <root id="archive" name="Quakecraft.jar">
       <element id="module-output" name="Quakecraft" />
       <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.yml" />
     </root>
   </artifact>
 </component>

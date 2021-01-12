@@ -11,5 +11,5 @@ public class GameCache {
     public static GameStates state;
     public static List<Player> players = new ArrayList<>();
     public static Long waitings;
-    public static ArrayList<Integer> seconds = new ArrayList<>();
+
 }

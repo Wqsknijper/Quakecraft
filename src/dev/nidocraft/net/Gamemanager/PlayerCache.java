@@ -1,11 +1,12 @@
 package dev.nidocraft.net.Gamemanager;
 
-import dev.nidocraft.net.Enums.GameStates;
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
+import dev.nidocraft.net.Enums.PlayerStates;
 import org.bukkit.entity.Player;
 
 public class PlayerCache {
 
-    GameStates gameState;
+    PlayerStates state;
     int kills;
     int deaths;
     Player player;
@@ -15,25 +16,42 @@ public class PlayerCache {
         this.player = p;
         this.kills = 0;
         this.deaths = 0;
-        this.gameState = GameStates.WAITING;
         this.lastShoot = System.currentTimeMillis();
     }
 
-    public void save(){ PlayerData.cache.remove(player); }
+    public void save() {
+        PlayerData.cache.remove(player);
+    }
 
-    public void setGameState(GameStates gs){ this.gameState = gs; }
+    public void addKills() {
+        this.kills++;
+    }
 
-    public GameStates getGameState() { return this.gameState; }
+    public int getKills() {
+        return this.kills;
+    }
 
-    public void addKills(){ this.kills++; }
+    public void addDeaths() {
+        this.deaths++;
+    }
 
-    public int getKills(){ return this.kills; }
+    public int getDeaths() {
+        return this.deaths;
+    }
 
-    public void addDeaths(){ this.deaths++; }
+    public void setLastShoot(Long ms) {
+        this.lastShoot = ms;
+    }
 
-    public int getDeaths(){ return this.deaths; }
+    public void setState(PlayerStates playerState) {
+        this.state = playerState;
+    }
 
-    public void setLastShoot(Long ms){ this.lastShoot = ms; }
+    public PlayerStates getState() {
+        return this.state;
+    }
 
-    public long getLastShoot(){ return this.lastShoot; }
+    public long getLastShoot() {
+        return this.lastShoot;
+    }
 }
