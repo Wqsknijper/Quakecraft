@@ -3,5 +3,6 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/dev/nidocraft/net/ConfigManager.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/dev/nidocraft/net/Main.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/dev/nidocraft/net/Utils/PlayerUtils.java" charset="UTF-8" />
   </component>
 </project>

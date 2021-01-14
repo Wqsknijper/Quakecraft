@@ -30,7 +30,7 @@ public class SpawnUtils {
         }
     }
 
-    public static ArrayList getRSpawn(Integer amount){
+    public static ArrayList<Location> getRSpawn(Integer amount){
         ArrayList<Location> r = new ArrayList<>();
         for(int i = 0; i <= amount; i++) {
             r.add(spawns.get(Math.round(Math.random() * (spawns.size() - 1))));
