@@ -17,7 +17,6 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static dev.nidocraft.net.Main.getValueFromPath;
@@ -70,15 +69,17 @@ public class GameUtils {
 
     public static void startManager(){
         if(GameCache.players.size() > (int) getValueFromPath("min-players") && GameCache.state == GameStates.WAITING) GameCache.state = GameStates.STARTING;
-        else if (GameCache.players.size() == (int) getValueFromPath("max-players") && GameCache.state == GameStates.STARTING) {
-            Bukkit.broadcastMessage("§eThe game has reached it's §lmax playerlimit§e. Timer changed to §l10 seconds§e!");
-        }
 
-        AtomicReference<Integer> i = new AtomicReference<>(0);
-        GameCache.players.forEach(p -> {
-            i.getAndSet(i.get() + 1);
+        else if (GameCache.players.size() == (int) getValueFromPath("max-players") && GameCache.state == GameStates.STARTING) {
+            Bukkit.broadcastMessage("§eThe game has reached it's §lplayerlimit§e. Timer changed to §l10 seconds§e!");
+        }
+        else return;
+
+        Integer i = 0;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            i++;
             p.teleport(SpawnUtils.spawns.get(i));
-        });
+        }
 
         while(GameCache.state == GameStates.STARTING) {
 

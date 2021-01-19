@@ -7,6 +7,8 @@ import dev.nidocraft.net.Gamemanager.PlayerCache;
 import dev.nidocraft.net.Gamemanager.PlayerData;
 import dev.nidocraft.net.Gamemanager.SbManager;
 import dev.nidocraft.net.Main;
+import net.minecraft.server.v1_11_R1.Enchantment;
+import net.minecraft.server.v1_11_R1.Enchantments;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,8 +33,10 @@ import static java.util.stream.Collectors.toMap;
 public class PlayerUtils implements Listener {
 
     @EventHandler
-    public void onJoinEvent(PlayerJoinEvent e){
+    public void onJoinEvent(PlayerJoinEvent e) {
         //check for vanish
+        if (GameCache.players.size() == (Integer) Main.getValueFromPath("max-players")) e.getPlayer().kickPlayer("§cGame is full!");
+
         e.setJoinMessage("");
 
         Thread a = new Thread(new BukkitRunnable() {
@@ -49,7 +53,7 @@ public class PlayerUtils implements Listener {
 
         e.getPlayer().setGameMode(GameMode.ADVENTURE);
         e.getPlayer().getInventory().clear();
-        e.getPlayer().teleport((Location) Main.getValueFromPath("lobby"));
+        e.getPlayer().teleport(Main.spawn);
 
         if (GameCache.state == GameStates.STARTING) e.getPlayer().teleport(SpawnUtils.spawns.get(GameCache.players.size()));
         GameUtils.startManager();
@@ -71,12 +75,11 @@ public class PlayerUtils implements Listener {
         Bukkit.broadcastMessage("§7[§c-§7] §8" + e.getPlayer().getDisplayName() + " §7left your game §7(§b" + (Bukkit.getOnlinePlayers().size() - 1) + "§7/12)");
         GameCache.players.remove(e.getPlayer());
 
-        if (GameCache.state == GameStates.STARTING && GameCache.players.size() <= (int) getValueFromPath("min-players")) {
-            GameCache.state = GameStates.WAITING;
-            Bukkit.broadcastMessage("§cNot enough players to start!");
+        if (GameCache.state == GameStates.STARTING && GameCache.players.size() <= (int) getValueFromPath("min-players")) return;
 
-            Bukkit.getOnlinePlayers().forEach(p -> p.teleport((Location) Main.getValueFromPath("lobby")));
-        }
+        GameCache.state = GameStates.WAITING;
+        Bukkit.broadcastMessage("§cNot enough players to start!");
+        Bukkit.getOnlinePlayers().forEach(p -> p.teleport(Main.spawn));
     }
 
     @EventHandler
@@ -101,9 +104,9 @@ public class PlayerUtils implements Listener {
 
         Map.Entry<Player, Integer> entryWithMaxValue = null;
         for (Map.Entry<Player, Integer> currentEntry : entry.entrySet()) {
-            if (entryWithMaxValue == null || currentEntry.getValue().compareTo(entryWithMaxValue.getValue()) > 0)
-                entryWithMaxValue = currentEntry;
+            if (entryWithMaxValue == null || currentEntry.getValue().compareTo(entryWithMaxValue.getValue()) > 0) entryWithMaxValue = currentEntry;
         }
+
         return entryWithMaxValue.getKey();
     }
 
@@ -117,7 +120,7 @@ public class PlayerUtils implements Listener {
         victim.setGameMode(GameMode.SPECTATOR);
         victim.setFlySpeed(0);
         victim.playSound(victim.getLocation(), Sound.ENTITY_ENDERDRAGON_HURT, 10F, 1F);
-        
+
         MathUtils.deathMode(victim, attacker);
     }
 

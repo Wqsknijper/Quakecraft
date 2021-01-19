@@ -4,16 +4,15 @@ max-players: 12
 #Waiting time before shooting again in seconds
 shoot-delay: 3
 #Add or remove numbers to make it equal to your max-players
-spawns:
-  lobby:
-    x: 165.5
-    y: 157.5
-    z: 89.5
-    yaw: 37.6
-    pitch: 4.9
-  minX: 101
-  maxX: 210
-  minZ: 275
-  maxZ: 148
-  minY: 125
+lobby:
+  x: 165.5
+  y: 157.5
+  z: 89.5
+  yaw: 38
+  pitch: 5
+minX: 101
+maxX: 210
+minZ: 275
+maxZ: 148
+minY: 125
 max-on-scoreboard: 5

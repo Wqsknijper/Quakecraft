@@ -4,15 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SpawnUtils {
 
-    public static HashMap<Integer, Location> spawns = new HashMap<>();
+    public static List<Location> spawns = new ArrayList<>();
 
-    public static void addSpawn(Integer i, Location loc){
-        spawns.put(i, loc);
+    public static void addSpawn(Location loc){
+        spawns.add(loc);
     }
 
     public static void generateSpawns(int minX, int maxX, int minZ, int maxZ, int minY, int spawnAmount) {
@@ -26,16 +25,7 @@ public class SpawnUtils {
             }
         }
         for (int i = 1; i <= spawnAmount; i++) {
-            addSpawn(i, locations.get((int) Math.round(Math.random() * (locations.size() - 1))));
+            spawns.add(locations.get((int) Math.round(Math.random() * (locations.size() - 1))));
         }
     }
-
-    public static ArrayList<Location> getRSpawn(Integer amount){
-        ArrayList<Location> r = new ArrayList<>();
-        for(int i = 0; i <= amount; i++) {
-            r.add(spawns.get(Math.round(Math.random() * (spawns.size() - 1))));
-        }
-        return r;
-    }
-
 }
